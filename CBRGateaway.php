@@ -67,12 +67,6 @@ class CBRGateaway extends CApplicationComponent {
     private $cachedMethodList = array();
     
     /**
-     * Возвращаемый результат от SoapClient
-     * @var StdClass object
-     */
-    private $gettedResult = null;
-    
-    /**
      * Наименование вызываемого метода
      * @var string
      */
@@ -162,7 +156,7 @@ class CBRGateaway extends CApplicationComponent {
      * @return StdClass object
      */
     public function getRawResultInStd() {
-        return (is_null($this->gettedResult)) ? $this->makeRequest() : $this->gettedResult;
+        return $this->makeRequest();
     }
     
     /**
@@ -264,12 +258,12 @@ class CBRGateaway extends CApplicationComponent {
             }
 
             //Soap запрос
-            $this->gettedResult = $client->__soapCall($this->calledMethodName, array($this->calledParams));
+            $gettedResult = $client->__soapCall($this->calledMethodName, array($this->calledParams));
 
             $logString = '[END] Request successfuly ended (ex.time:'.(microtime(true) - $startTime).'s)'.PHP_EOL.PHP_EOL.PHP_EOL;
             Yii::log($logString, 'info', 'cbr');
             
-            return $this->gettedResult;
+            return $gettedResult;
             
         } catch (SoapFault $fault) {
             
